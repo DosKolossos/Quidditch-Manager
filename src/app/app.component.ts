@@ -2,6 +2,8 @@ import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { GamescreenComponent } from './gamescreen/gamescreen.component';
+import { TeamService } from './team.service';
+
 
 @Component({
   selector: 'app-root',
@@ -12,4 +14,10 @@ import { GamescreenComponent } from './gamescreen/gamescreen.component';
 })
 export class AppComponent {
   title = 'quidditch-manager';
+
+  constructor(private teamService: TeamService) {}
+
+  uploadTeams() {
+    this.teamService.uploadTeams();
+  }
 }
