@@ -1,0 +1,26 @@
+[
+    {
+      "teamName": "Hogwarts Hawks",
+      "players": [
+        {"name": "Harry Thompson", "position": "Sucher", "skills": {"Geschicklichkeit": 85, "Robustheit": 70, "Reaktion": 90, "Ausdauer": 80, "Finisher": 88}},
+        {"name": "Luna Johnson", "position": "Jäger", "skills": {"Schussgenauigkeit": 75, "Passen": 65, "Abwehrverhalten": 70, "Reaktion": 68, "Abfangen": 80}},
+        {"name": "Fred Cooper", "position": "Treiber", "skills": {"Genauigkeit": 65, "Schlagkraft": 85, "Beschützen": 72, "Tackling": 60, "Übersicht": 70}},
+        {"name": "George Miller", "position": "Treiber", "skills": {"Genauigkeit": 67, "Schlagkraft": 88, "Beschützen": 74, "Tackling": 63, "Übersicht": 68}},
+        {"name": "Katie Smith", "position": "Jäger", "skills": {"Schussgenauigkeit": 78, "Passen": 62, "Abwehrverhalten": 66, "Reaktion": 70, "Abfangen": 82}},
+        {"name": "Ginny Brown", "position": "Jäger", "skills": {"Schussgenauigkeit": 80, "Passen": 68, "Abwehrverhalten": 72, "Reaktion": 75, "Abfangen": 79}},
+        {"name": "Oliver Green", "position": "Hüter", "skills": {"Halten": 90, "Stellungsspiel": 85, "Passen": 70, "Abfangen": 88, "Reaktion": 92}}
+      ]
+    },
+    {
+      "teamName": "Durmstrang Dragons",
+      "players": [
+        {"name": "Viktor Ivanov", "position": "Sucher", "skills": {"Geschicklichkeit": 88, "Robustheit": 75, "Reaktion": 92, "Ausdauer": 85, "Finisher": 90}},
+        {"name": "Anastasia Petrova", "position": "Jäger", "skills": {"Schussgenauigkeit": 77, "Passen": 68, "Abwehrverhalten": 74, "Reaktion": 71, "Abfangen": 81}},
+        {"name": "Dimitri Sokolov", "position": "Treiber", "skills": {"Genauigkeit": 64, "Schlagkraft": 82, "Beschützen": 70, "Tackling": 65, "Übersicht": 69}},
+        {"name": "Irina Romanov", "position": "Treiber", "skills": {"Genauigkeit": 66, "Schlagkraft": 80, "Beschützen": 73, "Tackling": 62, "Übersicht": 67}},
+        {"name": "Natalia Popov", "position": "Jäger", "skills": {"Schussgenauigkeit": 79, "Passen": 65, "Abwehrverhalten": 68, "Reaktion": 72, "Abfangen": 83}},
+        {"name": "Igor Volkov", "position": "Jäger", "skills": {"Schussgenauigkeit": 76, "Passen": 64, "Abwehrverhalten": 67, "Reaktion": 74, "Abfangen": 80}},
+        {"name": "Boris Kozlov", "position": "Hüter", "skills": {"Halten": 88, "Stellungsspiel": 82, "Passen": 68, "Abfangen": 85, "Reaktion": 90}}
+      ]
+    }
+  ]
