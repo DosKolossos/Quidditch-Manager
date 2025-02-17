@@ -1,1 +1,15 @@
-<p>gamescreen works!</p>
+<div class="game-screen">
+    <div class="teams">
+      <div class="team home-team">
+        <h3>Hogwarts Hawks</h3>
+        <div *ngFor="let player of homePlayers">{{ player.name }} | {{ player.form[0] }} <span *ngIf="player.position === 'Jäger' || player.position === 'Sucher'"> | Punkte: {{ (player.goals || 0) * 10 }}</span></div>
+      </div>
+      <div class="score">{{ homeScore }} : {{ awayScore }}</div>
+      <div class="team away-team">
+        <h3>Durmstrang Dragons</h3>
+        <div *ngFor="let player of awayPlayers">{{ player.name }} | {{ player.form[0] }} <span *ngIf="player.position === 'Jäger' || player.position === 'Sucher'"> | Punkte: {{ (player.goals || 0) * 10 }}</span></div>
+      </div>
+    </div>
+    <div class="time">Minute: {{ currentMinute }}</div>
+    <div class="event-log">{{ currentEvent }}</div>
+  </div>

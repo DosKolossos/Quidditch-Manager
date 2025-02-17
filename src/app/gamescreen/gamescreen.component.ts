@@ -1,70 +1,73 @@
-import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Firestore, collection, collectionData } from '@angular/fire/firestore';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-gamescreen',
   standalone: true,
   imports: [CommonModule],
-  template: `
-    <div class="game-screen">
-      <div class="teams">
-        <div class="team home-team">
-          Hogwarts Hawks
-          <div *ngFor="let player of homePlayers">{{ player.name }} <span class="rating">{{ player.rating }}</span></div>
-        </div>
-        <div class="score">{{ homeScore }} : {{ awayScore }}</div>
-        <div class="team away-team">
-          Durmstrang Dragons
-          <div *ngFor="let player of awayPlayers"><span class="rating">{{ player.rating }}</span> {{ player.name }}</div>
-        </div>
-      </div>
-      <div class="time">Minute: {{ currentMinute }}</div>
-      <div class="event-log">{{ currentEvent }}</div>
-    </div>
-  `,
-  styles: [
-    `.game-screen { text-align: center; }
-     .teams { display: flex; justify-content: space-between; }
-     .home-team {display: flex; text-align: left; flex-direction: column}
-     .away-team {display: flex; text-align: right; flex-direction: column}
-     .event-log { margin-top: 10px; }
-     .rating { margin-left: 5px; }`
-  ]
+  styleUrl: './gamescreen.component.scss',
+  templateUrl: './gamescreen.component.html',
 })
 export class GamescreenComponent {
-  homeScore = 0;
-  awayScore = 0;
+  homeChaser1Score = 0;
+  homeChaser2Score = 0;
+  homeChaser3Score = 0;
+  awayChaser1Score = 0;
+  awayChaser2Score = 0;
+  awayChaser3Score = 0;
+  homeScore = Math.floor(this.homeChaser1Score + this.homeChaser2Score + this.homeChaser3Score);
+  awayScore = Math.floor(this.awayChaser1Score + this.awayChaser2Score + this.awayChaser3Score);
   currentMinute = 0;
   currentEvent = '';
-  homePlayers = [
-    { name: 'Oliver Green', rating: 7 },
-    { name: 'Luna Johnson', rating: 5 },
-    { name: 'Katie Smith', rating: 6 },
-    { name: 'Ginny Brown', rating: 5 },
-    { name: 'Fred Cooper', rating: 6 },
-    { name: 'George Miller', rating: 4 },
-    { name: 'Harry Thompson', rating: 6 }
-  ];
-  awayPlayers = [
-    { name: 'Boris Kozlov', rating: 7 },
-    { name: 'Anastasia Petrova', rating: 6 },
-    { name: 'Natalia Popov', rating: 5 },
-    { name: 'Igor Volkov', rating: 4 },
-    { name: 'Dimitri Sokolov', rating: 5 },
-    { name: 'Irina Romanov', rating: 6 },
-    { name: 'Viktor Ivanov', rating: 7 }
-  ];
+  homePlayers: any[] = [];
+  awayPlayers: any[] = [];
 
-  constructor() {
+  constructor(private firestore: Firestore) {}
+
+  ngOnInit(): void {
+    this.loadTeams();
     this.startGame();
   }
 
+  loadTeams() {
+    const teamsCollection = collection(this.firestore, 'teams');
+    collectionData(teamsCollection).subscribe((teams: any) => {
+      this.homePlayers = teams.find((t: any) => t.teamName === 'Hogwarts Hawks').players;
+      this.awayPlayers = teams.find((t: any) => t.teamName === 'Durmstrang Dragons').players;
+    });
+  }
+
   startGame() {
-    const events = ['Ein spektakulärer Pass!', 'Eine großartige Parade!', 'Der Schnatz ist aufgetaucht!', 'Ein Treffer!'];
     const interval = setInterval(() => {
       this.currentMinute++;
-      this.currentEvent = events[Math.floor(Math.random() * events.length)];
-      if (this.currentMinute >= 90) clearInterval(interval);
-    }, 1000);
+
+  // Zufallsentscheidung für einen Torschuss (1/4 Chance)
+  if (Math.random() < 0.55) {
+    const homeJagers = this.homePlayers.filter(p => p.position === 'Jäger');
+    const awayJagers = this.awayPlayers.filter(p => p.position === 'Jäger');
+    const attackingTeam = Math.random() < 0.5 ? 'home' : 'away';
+    const attackingPlayer = attackingTeam === 'home'
+      ? homeJagers[Math.floor(Math.random() * homeJagers.length)]
+      : awayJagers[Math.floor(Math.random() * awayJagers.length)];
+
+    // Tor erzielen
+    if (attackingTeam === 'home') {
+      this.homeScore += 10;
+    } else {
+      this.awayScore += 10;
+    }
+
+    // Tor dem Spieler zuweisen
+    attackingPlayer.goals = (attackingPlayer.goals || 0) + 1;
+
+    this.currentEvent = `${attackingPlayer.name} hat ein Tor erzielt!`;
+  } else {
+    this.currentEvent = '';
+  }
+
+  if (this.currentMinute >= 90) clearInterval(interval);
+}, 1000);
   }
 }

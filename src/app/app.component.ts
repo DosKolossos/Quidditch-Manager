@@ -1,9 +1,8 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { GamescreenComponent } from './gamescreen/gamescreen.component';
 import { TeamService } from './team.service';
-
 
 @Component({
   selector: 'app-root',

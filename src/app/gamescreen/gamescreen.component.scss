@@ -1,0 +1,21 @@
+.game-screen {
+    text-align: center;
+}
+
+.teams {
+    display: flex;
+    justify-content: space-between;
+}
+
+.home-team, .away-team {
+    text-align: left;
+}
+
+.event-log {
+    margin-top: 10px;
+}
+
+.rating {
+    font-weight: bold;
+    margin-left: 5px;
+}
