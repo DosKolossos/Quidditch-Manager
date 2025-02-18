@@ -2,13 +2,13 @@
   {
     "teamName": "Hogwarts Hawks",
     "players": [
-      {"name": "Harry Thompson", "position": "Sucher", "skills": {"Geschicklichkeit": 85, "Robustheit": 70, "Reaktion": 90, "Ausdauer": 80, "Finisher": 88}, "form": [6, 6, 6, 6, 6]},
-      {"name": "Luna Johnson", "position": "Jäger", "skills": {"Schussgenauigkeit": 75, "Passen": 65, "Abwehrverhalten": 70, "Reaktion": 68, "Abfangen": 80}, "form": [6, 6, 6, 6, 6]},
-      {"name": "Fred Cooper", "position": "Treiber", "skills": {"Genauigkeit": 65, "Schlagkraft": 85, "Beschützen": 72, "Tackling": 60, "Übersicht": 70}, "form": [6, 6, 6, 6, 6]},
-      {"name": "George Miller", "position": "Treiber", "skills": {"Genauigkeit": 67, "Schlagkraft": 88, "Beschützen": 74, "Tackling": 63, "Übersicht": 68}, "form": [6, 6, 6, 6, 6]},
-      {"name": "Katie Smith", "position": "Jäger", "skills": {"Schussgenauigkeit": 78, "Passen": 62, "Abwehrverhalten": 66, "Reaktion": 70, "Abfangen": 82}, "form": [6, 6, 6, 6, 6]},
-      {"name": "Ginny Brown", "position": "Jäger", "skills": {"Schussgenauigkeit": 80, "Passen": 68, "Abwehrverhalten": 72, "Reaktion": 75, "Abfangen": 79}, "form": [6, 6, 6, 6, 6]},
-      {"name": "Oliver Green", "position": "Hüter", "skills": {"Halten": 90, "Stellungsspiel": 85, "Passen": 70, "Abfangen": 88, "Reaktion": 92}, "form": [6, 6, 6, 6, 6]}
+      {"name": "Harry Thompson", "position": "Sucher", "skills": {"Geschicklichkeit": 99, "Robustheit": 99, "Reaktion": 99, "Ausdauer": 99, "Finisher": 99}, "form": [6, 6, 6, 6, 6]},
+      {"name": "Luna Johnson", "position": "Jäger", "skills": {"Schussgenauigkeit": 99, "Passen": 99, "Abwehrverhalten": 99, "Reaktion": 99, "Abfangen": 99}, "form": [6, 6, 6, 6, 6]},
+      {"name": "Fred Cooper", "position": "Treiber", "skills": {"Genauigkeit": 99, "Schlagkraft": 99, "Beschützen": 99, "Tackling": 99, "Übersicht": 99}, "form": [6, 6, 6, 6, 6]},
+      {"name": "George Miller", "position": "Treiber", "skills": {"Genauigkeit": 99, "Schlagkraft": 99, "Beschützen": 99, "Tackling": 99, "Übersicht": 99}, "form": [6, 6, 6, 6, 6]},
+      {"name": "Katie Smith", "position": "Jäger", "skills": {"Schussgenauigkeit": 99, "Passen": 99, "Abwehrverhalten": 99, "Reaktion": 99, "Abfangen": 99}, "form": [6, 6, 6, 6, 6]},
+      {"name": "Ginny Brown", "position": "Jäger", "skills": {"Schussgenauigkeit": 99, "Passen": 99, "Abwehrverhalten": 99, "Reaktion": 99, "Abfangen": 99}, "form": [6, 6, 6, 6, 6]},
+      {"name": "Oliver Green", "position": "Hüter", "skills": {"Halten": 99, "Stellungsspiel": 99, "Passen": 99, "Abfangen": 99, "Reaktion": 99}, "form": [6, 6, 6, 6, 6]}
     ]
   },
   {

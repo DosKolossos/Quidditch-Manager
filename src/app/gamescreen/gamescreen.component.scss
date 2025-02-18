@@ -7,8 +7,22 @@
     justify-content: space-between;
 }
 
+.team {
+    width: max-content;
+}
+
 .home-team, .away-team {
     text-align: left;
+}
+
+.player-row {
+    display: flex;
+    width: fit-content;
+}
+
+.player-name {
+    width: 150px;
+    background-color: aqua;
 }
 
 .event-log {

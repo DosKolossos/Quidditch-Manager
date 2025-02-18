@@ -9,12 +9,17 @@ import { TeamService } from './team.service';
   standalone: true,
   imports: [CommonModule, RouterOutlet, GamescreenComponent],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  styleUrls: ['./app.component.scss']
 })
+
 export class AppComponent {
   title = 'quidditch-manager';
 
   constructor(private teamService: TeamService) {}
+
+  ngOnInit(): void {
+    this.uploadTeams();
+  }
 
   uploadTeams() {
     this.teamService.uploadTeams();
