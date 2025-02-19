@@ -1,0 +1,33 @@
+{
+    "mvpDraw": {
+      "female": [
+        "{name} war die beste Spielerin auf dem Quidditchfeld.",
+        "{name} dominierte als beste Spielerin das Spiel."
+      ],
+      "male": [
+        "{name} war der beste Spieler auf dem Quidditchfeld.",
+        "{name} zeigte eine herausragende Leistung als bester Spieler."
+      ]
+    },
+    "mvpHomeWin": {
+      "female": [
+        "Herausragende Spielerin war {name}, die {teamNominative} zum Sieg führte.",
+        "Mit ihrer überragenden Performance sicherte {name} {teamNominative} den Sieg."
+      ],
+      "male": [
+        "Herausragender Spieler war {name}, der {teamNominative} zum Sieg führte.",
+        "Mit exzellenter Leistung sicherte {name} {teamNominative} den Triumph."
+      ]
+    },
+    "mvpAwayWin": {
+      "female": [
+        "Herausragende Spielerin war {name}, die {teamNominative} zum Sieg führte.",
+        "Mit ihrer starken Performance führte {name} {teamNominative} zum Sieg."
+      ],
+      "male": [
+        "Herausragender Spieler war {name}, der {teamNominative} zum Sieg führte.",
+        "Dank seiner exzellenten Leistung sicherte {name} {teamNominative} den Sieg."
+      ]
+    }
+  }
+  

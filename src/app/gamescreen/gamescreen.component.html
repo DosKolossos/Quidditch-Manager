@@ -1,31 +1,31 @@
 <div class="game-screen">
-    <div class="teams">
-      <div class="team home-team">
-        <h3>Hogwarts Hawks</h3>
-        <div *ngFor="let player of homePlayers" class="player-row">
-          <div class="player-name">{{ player.name }}</div> | 
-          <div class="player-performance">{{ player.todayPerformance }}</div>
-          <span *ngIf="player.position === 'Jäger'"> | Punkte: {{ (player.goals || 0) * 10 }}</span>
-          <span *ngIf="player.position === 'Sucher'"> | Punkte: {{ homeSeekerScore }}</span>
-        </div>
-      </div>
-      <div class="score">{{ homeScore }} : {{ awayScore }}</div>
-      <div class="team away-team">
-        <h3>Durmstrang Dragons</h3>
-        <div *ngFor="let player of awayPlayers" class="player-row">
-          <div class="player-name">{{ player.name }}</div> | 
-          <div class="player-performance">{{ player.todayPerformance }}</div>
-          <span *ngIf="player.position === 'Jäger'"> | Punkte: {{ (player.goals || 0) * 10 }}</span>
-          <span *ngIf="player.position === 'Sucher'"> | Punkte: {{ awaySeekerScore }}</span>
-        </div>
+  <div class="teams">
+    <div class="team home-team">
+      <h3>Hogwarts Hawks</h3>
+      <div *ngFor="let player of homePlayers" class="player-row">
+        <div class="player-name">{{ player.name }}</div> |
+        <div class="player-performance">{{ player.todayPerformance }}</div>
+        <span *ngIf="player.position === 'Jäger'"> | Punkte: {{ (player.goals || 0) * 10 }}</span>
+        <span *ngIf="player.position === 'Sucher'"> | Punkte: {{ homeSeekerScore }}</span>
       </div>
     </div>
-    <div class="time">Minute: {{ currentMinute }}</div>
-    <div class="event-log">
-        <div *ngFor="let event of eventLog">
-          {{ event }}
-        </div>
+    <div class="score">{{ homeScore }} : {{ awayScore }}</div>
+    <div class="team away-team">
+      <h3>Durmstrang Dragons</h3>
+      <div *ngFor="let player of awayPlayers" class="player-row">
+        <div class="player-name">{{ player.name }}</div> |
+        <div class="player-performance">{{ player.todayPerformance }}</div>
+        <span *ngIf="player.position === 'Jäger'"> | Punkte: {{ (player.goals || 0) * 10 }}</span>
+        <span *ngIf="player.position === 'Sucher'"> | Punkte: {{ awaySeekerScore }}</span>
       </div>
-      
+    </div>
   </div>
-  
+  <div class="time">Minute: {{ currentMinute }}</div>
+  <div class="event-log">
+    <div class="event-log">{{ currentEventSegment }}</div>
+
+  </div>
+  <div class="summary-log" *ngIf="summaryLog">
+    <pre>{{ summaryLog }}</pre>
+  </div>
+</div>

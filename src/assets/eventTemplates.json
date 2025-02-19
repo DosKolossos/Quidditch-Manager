@@ -1,0 +1,84 @@
+{
+  "chaser": {
+    "intro": [
+      "{attacker} rast auf die gegnerischen Torringe zu",
+      "{attacker} düst voller Energie auf die gegnerischen Tore zu",
+      "Mit Vollgas fliegt {attacker} zu den Torringen",
+      "{attacker} schnappt sich den Quaffel und rast Richtung gegnerische Torringe",
+      "{attacker} hat nun keine Lust mehr und macht einen Alleingang"
+    ],
+    "parryAttempt": [
+      "{defender} macht sich ganz lang...",
+      "{defender} gibt {pronoun} Bestes, um den Schuss abzuwehren...",
+      "{defender} versucht zu parieren...",
+      "{defender} gibt {pronoun} Bestes..."
+    ],
+    "parrySuccess": [
+      "{defender} macht sich ganz lang...",
+      "{defender} gibt {pronoun} Bestes, um den Schuss abzuwehren...",
+      "{defender} versucht zu parieren...",
+      "{defender} gibt {pronoun} Bestes..."
+    ],
+    "missingShot": [
+      "Gehalten!",
+      "Vorbei!",
+      "Daneben!",
+      "Knapp vorbei!",
+      "Der Quaffel landet auf der Tribüne!",
+      "Der Quaffel fliegt vorbei!"
+    ]
+  },
+  "treiber": {
+    "interventionSuccess": [
+      "{enemyTreiber} schlägt einen Klatscher auf {attacker}",
+      "{enemyTreiber} interveniert erfolgreich und verhindert den Schuss!"
+    ],
+    "treiberProtection": [
+      "{ownTreiber} beschützt {attacker} -> {attacker} weicht aus und schießt weiter",
+      "{attacker} wird von {ownTreiber} unterstützt"
+    ],
+    "noIntervention": [
+      "Der Angriff wird nicht aufgehalten!"
+    ]
+  },
+  "snitch": {
+    "intro": [
+      "{Sucher} bemerkt den flinken Schnatz und setzt zur Verfolgung an."
+    ],
+    "opponentWarning": [
+      "{opponentSucher} von {opponent} kann nicht mithalten.",
+      "{opponentSucher} bleibt auf der Strecke."
+    ],
+    "clatter": [
+      "Ein gut geschlagener Klatscher von {enemyDriver} kreuzt den Pfad des Suchers."
+    ],
+    "interventionAttempt": [
+      "{enemyDriver} versucht, {Sucher} zu stören.",
+      "{enemyDriver} will den Schnatzfang unterbrechen."
+    ],
+    "interventionSuccess": [
+      "{enemyDriver} unterbricht den Schnatzfang – Intervention erfolgreich!"
+    ],
+    "intervention": [
+      "{enemyDriver} unterbricht den Schnatzfang.",
+      "{enemyDriver} greift ein und verhindert kurzzeitig den Schnatzfang."
+    ],
+    "driverProtection": [
+      "{ownDriver} beschützt seinen Sucher!",
+      "Den Braten hat {ownDriver} gerochen, grandiose Rettungstat!",
+      "{ownDriver} antizipierte diesen Klatscherangriff!"
+    ],
+    "catch": {
+      "win": [
+        "{snitchCatcher} fängt den Schnatz und sichert {teamAccusative} so den Sieg.",
+        "{snitchCatcher} holt den Schnatz und bringt {teamAccusative} den entscheidenden Vorteil."
+      ],
+      "draw": [
+        "{snitchCatcher} fängt den Schnatz und sichert {teamAccusative} zumindest noch das Remis."
+      ],
+      "loss": [
+        "Der Schnatzfang von {snitchCatcher} reichte nicht aus, {teamAccusative} vor der Niederlage zu bewahren."
+      ]
+    }
+  }
+}
