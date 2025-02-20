@@ -27,10 +27,12 @@ interface EventTemplates {
     intro: string[];
     parryAttempt: string[];
     parrySuccess: string[];
+    missingShot: string[]
   };
   treiber: {  // statt "driver"
     interventionSuccess: string[];
     treiberProtection: string[];
+    noIntervention: string[];
   };
   snitch: {
     intro: string[];
@@ -39,6 +41,7 @@ interface EventTemplates {
     interventionAttempt: string[];
     interventionSuccess: string[];
     intervention: string[];
+    driverProtection: string[];
     catch: {
       win: string[];
       draw: string[];
@@ -85,8 +88,8 @@ export class GamescreenComponent {
   // Wir verwenden ein Eventlog und ein aktuelles Segment für die Anzeige:
   eventLog: string[] = [];
   currentEventSegment: string = "";
-  textTempo: number = 3000;
-  gameTempo: number = 200;
+  textTempo: number = 30;
+  gameTempo: number = 20;
   summaryLog: string = "";
   // Flag, das anzeigt, ob gerade eine Eventkette angezeigt wird:
   private isEventChainActive: boolean = false;
@@ -318,8 +321,8 @@ export class GamescreenComponent {
     let keeperAverage = 0;
   
     const { attackingTeam, attackingPlayer } = this.decideAttackingTeam();
-    // Nutze ein dynamisches Template für die Einleitung:
-    const introText = this.getRandomTemplate("chaser", "intro", { attacker: attackingPlayer.name });
+    // Nutze ein dynamisches Template für die Einleitung – falls attackingPlayer.name fehlt, benutze einen Fallback
+    const introText = this.getRandomTemplate("chaser", "intro", { attacker: attackingPlayer.name || "Unbekannter Spieler" });
     eventChain.push(introText);
   
     const shooterAccuracy = attackingPlayer.skills["Schussgenauigkeit"];
@@ -336,7 +339,7 @@ export class GamescreenComponent {
           : this.homePlayers.filter((p) => p.position === 'Treiber');
       if (enemyTreiberCandidates.length === 0) {
         // Verwende ein Template, wenn kein gegnerischer Treiber zur Intervention bereitsteht
-        eventChain.push(this.getRandomTemplate("treiber", "noIntervention", {}));
+        eventChain.push(this.getRandomTemplate("treiber", "noIntervention", { attacker: attackingPlayer.name }));
       } else {
         const interventionOccurred = this.processTreiberIntervention(attackingPlayer, attackingTeam, eventChain);
         if (interventionOccurred) {
@@ -353,33 +356,47 @@ export class GamescreenComponent {
       }
       pendingAttackingPlayerDelta += 1; // Jäger erhält +1
       pendingGoalIncrement = 1;
-      if (defenderKeeper) {
-        // Bei einem Treffer soll der Keeper abgewertet werden
+      if (defenderKeeper && defenderKeeper.name) {
         pendingDefenderDelta = -0.5;
         const pronoun = defenderKeeper.gender === 'female' ? "ihr" : "sein";
-        const parryAttemptText = this.getRandomTemplate("chaser", "parryAttempt", { defender: defenderKeeper.name, pronoun: pronoun });
+        const parryAttemptText = this.getRandomTemplate("chaser", "parryAttempt", {
+          defender: defenderKeeper.name,
+          pronoun: pronoun
+        });
         eventChain.push(parryAttemptText);
       }
       eventChain.push("Tor!");
     } else {
       pendingAttackingPlayerDelta -= 0.5;
-      if (defenderKeeper) {
-        pendingDefenderDelta += 1; // Bei einem abgewehrten Schuss steigt die Bewertung des Keepers
+      if (defenderKeeper && defenderKeeper.name) {
+        pendingDefenderDelta += 1;
         const pronoun = defenderKeeper.gender === 'female' ? "ihr" : "sein";
-        const parrySuccessText = this.getRandomTemplate("chaser", "parrySuccess", { defender: defenderKeeper.name, pronoun: pronoun });
+        const parrySuccessText = this.getRandomTemplate("chaser", "parrySuccess", {
+          defender: defenderKeeper.name,
+          pronoun: pronoun
+        });
         eventChain.push(parrySuccessText);
       } else {
         eventChain.push(`${attackingPlayer.name} schießt und verfehlt!`);
       }
-      if (defenderKeeper) {
+      if (defenderKeeper && defenderKeeper.name) {
         const pronoun = defenderKeeper.gender === 'female' ? "ihr" : "sein";
-        const missingShot = this.getRandomTemplate("chaser", "missingShot", { defender: defenderKeeper.name, pronoun: pronoun });
+        const missingShot = this.getRandomTemplate("chaser", "missingShot", {
+          defender: defenderKeeper.name,
+          pronoun: pronoun
+        });
         eventChain.push(missingShot);
       } else {
-        const missingShot = this.getRandomTemplate("chaser", "missingShot", { defender: "Kein Verteidiger", pronoun: "" });
+        const missingShot = this.getRandomTemplate("chaser", "missingShot", {
+          defender: "Kein Verteidiger",
+          pronoun: ""
+        });
         eventChain.push(missingShot);
       }
     }
+  
+    // Zum Debuggen: Gib die gesamte EventChain in der Konsole aus
+    console.log("EventChain:", eventChain);
   
     // Zeige die Eventkette segmentweise an und führe dann die pending Updates im Callback aus.
     this.displayEventChain(eventChain, () => {
@@ -398,6 +415,9 @@ export class GamescreenComponent {
       this.updateScore();
     });
   }
+  
+
+  
   
 
   // 8. Verarbeite alle 20 Minuten den Performance-Abzug für beide Sucher
@@ -433,7 +453,7 @@ export class GamescreenComponent {
   
       // Schritt 1: Einleitung (dynamisch aus eventTemplates laden)
       eventChain.push(this.getRandomTemplate("snitch", "intro", {}));
-  
+      console.log(eventChain);
       const bonus = 3 - 0.5 * Math.floor(this.currentMinute / 20);
       const homeSeeker = this.homePlayers.find((p) => p.position === 'Sucher');
       const awaySeeker = this.awayPlayers.find((p) => p.position === 'Sucher');
@@ -498,8 +518,12 @@ export class GamescreenComponent {
         }
       }
   
-// Schritt 5: Abschluss – falls keine erfolgreiche Intervention erfolgte, wird der Schnatzfang gewertet
-if (!interventionOccurred) {
+// Schritt 5: Abschluss – prüfe, ob Intervention stattgefunden hat
+if (interventionOccurred) {
+  snitchCaught = false;
+  // Füge einen dynamischen Text hinzu, der signalisiert, dass der Schnatzfang verhindert wurde.
+  eventChain.push(this.getRandomTemplate("snitch", "intervention", {}));
+} else {
   snitchCaught = true;
   if (catchingTeam === 'home') {
     pendingHomeSeekerDelta = bonus;
@@ -512,10 +536,8 @@ if (!interventionOccurred) {
     this.finalSnitchCatcherName = awaySeeker ? awaySeeker.name : "Durmstrang Dragons";
     eventChain.push(this.getRandomTemplate("snitch", "catch", { snitchCatcher: this.finalSnitchCatcherName }));
   }
-} else {
-  // Falls eine Intervention erfolgte, gib einen entsprechenden Text aus.
-  eventChain.push("Schnatzfang wurde erfolgreich durch Intervention unterbrochen.");
 }
+
 
   
       // Zeige die Eventkette segmentweise an und führe dann im Callback die Updates aus.

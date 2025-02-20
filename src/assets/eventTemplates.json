@@ -34,11 +34,12 @@
       "{enemyTreiber} interveniert erfolgreich und verhindert den Schuss!"
     ],
     "treiberProtection": [
-      "{ownTreiber} beschützt {attacker} -> {attacker} weicht aus und schießt weiter",
+      "{ownTreiber} beschützt {attacker} -> {attacker} weicht aus und schießt",
       "{attacker} wird von {ownTreiber} unterstützt"
     ],
     "noIntervention": [
-      "Der Angriff wird nicht aufgehalten!"
+      "Der Angriff wird nicht aufgehalten!",
+      "{attacker} hat freie Bahn!"
     ]
   },
   "snitch": {
