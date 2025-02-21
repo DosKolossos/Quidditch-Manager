@@ -451,12 +451,14 @@ export class GamescreenComponent {
       let pendingAwaySeekerDelta = 0;
       let snitchCaught = false;
   
-      // Schritt 1: Einleitung (dynamisch aus eventTemplates laden)
+      // Schritt 1: Einleitung (Template dynamisch laden)
       eventChain.push(this.getRandomTemplate("snitch", "intro", {}));
-      console.log(eventChain);
+  
       const bonus = 3 - 0.5 * Math.floor(this.currentMinute / 20);
       const homeSeeker = this.homePlayers.find((p) => p.position === 'Sucher');
       const awaySeeker = this.awayPlayers.find((p) => p.position === 'Sucher');
+  
+      // Berechne die kombinierten Skills der Sucher
       const homeSeekerSkill = homeSeeker
         ? Object.values(homeSeeker.skills).reduce((sum: number, v: number) => sum + v, 0)
         : 0;
@@ -465,13 +467,18 @@ export class GamescreenComponent {
         : 0;
       const totalSeekerSkill = homeSeekerSkill + awaySeekerSkill;
       const homeProbability = totalSeekerSkill > 0 ? homeSeekerSkill / totalSeekerSkill : 0.5;
-      const catchingTeam: 'home' | 'away' = Math.random() < homeProbability ? 'home' : 'away';
   
-      // Schritt 2: Hinweis, welcher gegnerische Sucher nicht mithalten kann (dynamisch)
+      // Wähle hier einen Sucher als "festen" Kandidaten anhand des Catching-Teams:
+      const catchingTeam: 'home' | 'away' = Math.random() < homeProbability ? 'home' : 'away';
+      const selectedSeeker = catchingTeam === 'home' ? homeSeeker : awaySeeker;
+      // Falls kein Sucher vorhanden ist, verwende einen Fallback-Namen:
+      const selectedSeekerName = selectedSeeker ? selectedSeeker.name : "Sucher";
+  
+      // Schritt 2: Hinweis, welcher gegnerische Sucher nicht mithalten kann – übergeben kannst du z. B. den Namen
       if (catchingTeam === 'home') {
-        eventChain.push(this.getRandomTemplate("snitch", "opponentWarning", { opponent: "Durmstrang" }));
+        eventChain.push(this.getRandomTemplate("snitch", "opponentWarning", { opponent: "Durmstrang", opponentSucher: awaySeeker ? awaySeeker.name : "Sucher" }));
       } else {
-        eventChain.push(this.getRandomTemplate("snitch", "opponentWarning", { opponent: "Hogwarts" }));
+        eventChain.push(this.getRandomTemplate("snitch", "opponentWarning", { opponent: "Hogwarts", opponentSucher: homeSeeker ? homeSeeker.name : "Sucher" }));
       }
   
       // Schritt 3: Ein Klatscher kreuzt den Weg des Suchers
@@ -485,9 +492,7 @@ export class GamescreenComponent {
       if (enemyTreiberCandidates.length > 0) {
         const enemyTreiber = enemyTreiberCandidates[Math.floor(Math.random() * enemyTreiberCandidates.length)];
         const offenseSkill = (enemyTreiber.skills["Genauigkeit"] + enemyTreiber.skills["Schlagkraft"]) / 2;
-        const seekerReaction = catchingTeam === 'home'
-          ? (homeSeeker ? homeSeeker.skills["Reaktion"] : 50)
-          : (awaySeeker ? awaySeeker.skills["Reaktion"] : 50);
+        const seekerReaction = selectedSeeker ? selectedSeeker.skills["Reaktion"] : 50;
         let interventionChance = offenseSkill / seekerReaction;
         if (interventionChance > 1) interventionChance = 1;
         if (Math.random() < interventionChance) {
@@ -503,14 +508,12 @@ export class GamescreenComponent {
             if (Math.random() < protectionChance) {
               protectedByDefender = true;
               defensiveTreiber.todayPerformance = Math.min(10, defensiveTreiber.todayPerformance + 2);
-              // Hier nutze ich den existierenden Key "interventionSuccess" als Ersatz,
-              // da "driverProtection" im snitch-Bereich fehlt.
               eventChain.push(this.getRandomTemplate("snitch", "interventionSuccess", { ownDriver: defensiveTreiber.name }));
             }
           }
           if (!protectedByDefender) {
             enemyTreiber.todayPerformance = Math.min(10, enemyTreiber.todayPerformance + 2);
-            eventChain.push(this.getRandomTemplate("snitch", "interventionSuccess", { enemyDriver: enemyTreiber.name }));
+            eventChain.push(this.getRandomTemplate("snitch", "interventionFail", { enemyDriver: enemyTreiber.name }));
             interventionOccurred = true;
           }
         } else {
@@ -518,27 +521,28 @@ export class GamescreenComponent {
         }
       }
   
-// Schritt 5: Abschluss – prüfe, ob Intervention stattgefunden hat
-if (interventionOccurred) {
-  snitchCaught = false;
-  // Füge einen dynamischen Text hinzu, der signalisiert, dass der Schnatzfang verhindert wurde.
-  eventChain.push(this.getRandomTemplate("snitch", "intervention", {}));
-} else {
-  snitchCaught = true;
-  if (catchingTeam === 'home') {
-    pendingHomeSeekerDelta = bonus;
-    this.finalSnitchCatcherTeam = 'home';
-    this.finalSnitchCatcherName = homeSeeker ? homeSeeker.name : "Hogwarts Hawks";
-    eventChain.push(this.getRandomTemplate("snitch", "catch", { snitchCatcher: this.finalSnitchCatcherName }));
-  } else {
-    pendingAwaySeekerDelta = bonus;
-    this.finalSnitchCatcherTeam = 'away';
-    this.finalSnitchCatcherName = awaySeeker ? awaySeeker.name : "Durmstrang Dragons";
-    eventChain.push(this.getRandomTemplate("snitch", "catch", { snitchCatcher: this.finalSnitchCatcherName }));
-  }
-}
-
-
+      // Schritt 5: Abschluss – prüfe, ob eine Intervention stattgefunden hat.
+      if (interventionOccurred) {
+        snitchCaught = false;
+        // Füge einen dynamischen Text hinzu, der signalisiert, dass der Schnatzfang verhindert wurde.
+        eventChain.push(this.getRandomTemplate("snitch", "intervention", {}));
+      } else {
+        snitchCaught = true;
+        if (catchingTeam === 'home') {
+          pendingHomeSeekerDelta = bonus;
+          this.finalSnitchCatcherTeam = 'home';
+          this.finalSnitchCatcherName = selectedSeekerName;
+          eventChain.push(this.getRandomTemplate("snitch", "catch", { snitchCatcher: selectedSeekerName }));
+        } else {
+          pendingAwaySeekerDelta = bonus;
+          this.finalSnitchCatcherTeam = 'away';
+          this.finalSnitchCatcherName = selectedSeekerName;
+          eventChain.push(this.getRandomTemplate("snitch", "catch", { snitchCatcher: selectedSeekerName }));
+        }
+      }
+  
+      // Debug: Ausgabe der kompletten EventChain in der Konsole
+      console.log("Snitch event chain:", eventChain);
   
       // Zeige die Eventkette segmentweise an und führe dann im Callback die Updates aus.
       this.displayEventChain(eventChain, () => {
@@ -570,10 +574,12 @@ if (interventionOccurred) {
           this.displayGameSummary();
         }
       });
+  
       return true;
     }
     return false;
   }
+  
   
 
 
@@ -750,7 +756,8 @@ if (interventionOccurred) {
   private getRandomTemplate(
     category: keyof EventTemplates,
     type: string,
-    placeholders: { [key: string]: string }
+    placeholders: { [key: string]: string },
+    additionalPlaceholders?: { [key: string]: string }
   ): string {
     const catTemplates = (eventTemplates as EventTemplates)[category];
     const templates = catTemplates[type as keyof typeof catTemplates] as string[] | undefined;
@@ -760,12 +767,16 @@ if (interventionOccurred) {
     }
     const randomTemplate = templates[Math.floor(Math.random() * templates.length)];
     if (!randomTemplate) return "";
+    
     let output = randomTemplate;
-    for (const key in placeholders) {
-      output = output.replace(new RegExp(`{${key}}`, 'g'), placeholders[key]);
+    // Fasse beide Placeholder-Objekte zusammen
+    const combinedPlaceholders = { ...placeholders, ...additionalPlaceholders };
+    for (const key in combinedPlaceholders) {
+      output = output.replace(new RegExp(`{${key}}`, 'g'), combinedPlaceholders[key]);
     }
     return output;
   }
+  
   
 
 

@@ -44,7 +44,7 @@
   },
   "snitch": {
     "intro": [
-      "{Sucher} bemerkt den flinken Schnatz und setzt zur Verfolgung an."
+      "Der Schnatz taucht auf! Sehen wir nun das Ende des Spiels?"
     ],
     "opponentWarning": [
       "{opponentSucher} von {opponent} kann nicht mithalten.",
